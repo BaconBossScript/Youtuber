@@ -1,0 +1,83 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "BaconBoss Hub | YouTuber Battles Simulator", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+ 
+_G.win = true
+_G.rb = true
+getgenv().tpPlace = "string"
+
+function Teleport(teleportPlace)
+    local player = game.Players.LocalPlayer
+    player.Character.HumanoidRootPart.CFrame = teleportPlace
+end
+
+function win()
+     while _G.win == true do
+        local args = {
+            [1] = "won"
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RaceEvent"):FireServer(unpack(args))
+        wait(0)
+    end
+end
+
+function rb()
+     while _G.rb == true do
+        game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RebirthsEvent"):FireServer()
+     wait(1)
+    end
+end
+
+local MainTab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+MainTab:AddToggle({
+	Name = "Instant Win Any Boss",
+	Default = false,
+	Callback = function(Value)
+        _G.win = Value
+        win()
+	end    
+})
+
+MainTab:AddToggle({
+	Name = "Auto Rebirth",
+	Default = false,
+	Callback = function(Value)
+        _G.rb = Value
+        rb()
+	end    
+})
+
+local TpTab = Window:MakeTab({
+	Name = "Tp",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+TpTab:AddDropdown({
+	Name = "Select World",
+	Default = "World 1",
+	Options = {"World 1", "World 2", "World 3", "World 4"},
+	Callback = function(Value)
+	    getgenv().tpPlace = Value  
+	end    
+})
+
+TpTab:AddButton({
+	Name = "Button!",
+	Callback = function()
+	    if getgenv().tpPlace == "World 1" then
+      	 Teleport(game:GetService("Workspace").Eggs["Basic Egg"].Main.CFrame)
+		elseif getgenv().tpPlace == "World 2" then
+         Teleport(game:GetService("Workspace").Eggs["Ice Snow Egg"].Main.CFrame)
+        elseif getgenv().tpPlace == "World 3" then
+      	 Teleport(game:GetService("Workspace").Eggs["Magma Egg"].Main.CFrame)
+		elseif getgenv().tpPlace == "World 4" then
+         Teleport(game:GetService("Workspace").Eggs["Seaweed Egg"].Main.CFrame)
+	    end    
+    end
+}) 
