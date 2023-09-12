@@ -4,11 +4,25 @@ local Window = OrionLib:MakeWindow({Name = "BaconBoss Hub | YouTuber Battles Sim
 _G.win = true
 _G.rb = true
 getgenv().tpPlace = "string"
+_G.auto = true
 
 function Teleport(teleportPlace)
     local player = game.Players.LocalPlayer
     player.Character.HumanoidRootPart.CFrame = teleportPlace
 end
+
+function auto()
+	 while _G.auto == true do
+		local args = {
+			[1] = "race",
+			[2] = workspace:WaitForChild("Bots"):WaitForChild("4"):WaitForChild("Final")
+		}
+		
+		game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RaceEvent"):FireServer(unpack(args))
+		wait(0)
+    end
+end		
+
 
 function win()
      while _G.win == true do
@@ -44,6 +58,15 @@ MainTab:AddToggle({
 })
 
 MainTab:AddToggle({
+	Name = "Turn On This For Super Fast Win",
+	Default = false,
+	Callback = function(Value)
+        _G.auto = Value
+        auto()
+	end    
+})
+
+MainTab:AddToggle({
 	Name = "Auto Rebirth",
 	Default = false,
 	Callback = function(Value)
@@ -68,7 +91,7 @@ TpTab:AddDropdown({
 })
 
 TpTab:AddButton({
-	Name = "Button!",
+	Name = "Tp",
 	Callback = function()
 	    if getgenv().tpPlace == "World 1" then
       	 Teleport(game:GetService("Workspace").Eggs["Basic Egg"].Main.CFrame)
